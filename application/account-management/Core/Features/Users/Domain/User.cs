@@ -6,7 +6,7 @@ public sealed class User : AggregateRoot<UserId>, ITenantScopedEntity
 {
     private string _email = string.Empty;
 
-    private User(TenantId tenantId, string email, UserRole role, bool emailConfirmed, string? locale)
+    private User(TenantId tenantId, string email, UserRole role, bool emailConfirmed, string? locale, string? timeZone)
         : base(UserId.NewId())
     {
         Email = email;
@@ -14,6 +14,7 @@ public sealed class User : AggregateRoot<UserId>, ITenantScopedEntity
         Role = role;
         EmailConfirmed = emailConfirmed;
         Locale = locale ?? string.Empty;
+        TimeZone = timeZone ?? string.Empty;
         Avatar = new Avatar();
     }
 
@@ -37,11 +38,13 @@ public sealed class User : AggregateRoot<UserId>, ITenantScopedEntity
 
     public string Locale { get; private set; }
 
+    public string TimeZone { get; private set; }
+
     public TenantId TenantId { get; }
 
-    public static User Create(TenantId tenantId, string email, UserRole role, bool emailConfirmed, string? locale)
+    public static User Create(TenantId tenantId, string email, UserRole role, bool emailConfirmed, string? locale, string? timeZone = null)
     {
-        return new User(tenantId, email, role, emailConfirmed, locale);
+        return new User(tenantId, email, role, emailConfirmed, locale, timeZone);
     }
 
     public void Update(string firstName, string lastName, string title)
