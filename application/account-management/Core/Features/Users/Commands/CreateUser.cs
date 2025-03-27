@@ -12,7 +12,14 @@ using PlatformPlatform.SharedKernel.Validation;
 
 namespace PlatformPlatform.AccountManagement.Features.Users.Commands;
 
-internal sealed record CreateUserCommand(TenantId TenantId, string Email, UserRole UserRole, bool EmailConfirmed, string? PreferredLocale)
+internal sealed record CreateUserCommand(
+    TenantId TenantId,
+    string Email,
+    UserRole UserRole,
+    bool EmailConfirmed,
+    string? PreferredLocale,
+    string? TimeZone = "UTC"
+)
     : ICommand, IRequest<Result<UserId>>
 {
     public string Email { get; } = Email.Trim().ToLower();
@@ -50,7 +57,7 @@ internal sealed class CreateUserHandler(
         var locale = SinglePageAppConfiguration.SupportedLocalizations.Contains(command.PreferredLocale)
             ? command.PreferredLocale
             : string.Empty;
-        var user = User.Create(command.TenantId, command.Email, command.UserRole, command.EmailConfirmed, locale);
+        var user = User.Create(command.TenantId, command.Email, command.UserRole, command.EmailConfirmed, locale, command.TimeZone);
 
         await userRepository.AddAsync(user, cancellationToken);
         var gravatar = await gravatarClient.GetGravatar(user.Id, user.Email, cancellationToken);

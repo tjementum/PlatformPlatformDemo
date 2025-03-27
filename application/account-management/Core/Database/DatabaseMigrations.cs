@@ -92,3 +92,19 @@ public sealed class DatabaseMigrations : Migration
         migrationBuilder.CreateIndex("IX_Logins_UserId", "Logins", "UserId");
     }
 }
+
+[DbContext(typeof(AccountManagementDbContext))]
+[Migration("20250327000000_AddTimeZoneToUser")]
+public sealed class AddTimeZoneToUserMigration : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn<string>(
+            "TimeZone",
+            "Users",
+            "varchar(50)",
+            nullable: false,
+            defaultValue: ""
+        );
+    }
+}

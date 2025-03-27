@@ -42,7 +42,8 @@ public sealed class DeleteUserTests : EndpointBaseTest<AccountManagementDbContex
                 ("Role", UserRole.Member.ToString()),
                 ("EmailConfirmed", true),
                 ("Avatar", JsonSerializer.Serialize(new Avatar())),
-                ("Locale", "en-US")
+                ("Locale", "en-US"),
+                ("TimeZone", "UTC")
             ]
         );
 
